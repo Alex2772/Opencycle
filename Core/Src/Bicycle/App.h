@@ -5,6 +5,8 @@
 class App {
 private:
     IDisplayDriver* mDisplay;
+    State mState;
+
 
     App() = default;
 

@@ -11,4 +11,9 @@ extern "C" void app_run() {
 void App::run() {
     // TODO embed to some config
     mDisplay = new LCD2004(hi2c1, LCD2004_I2C_ADDR);
+
+    for (;;) {
+        // TODO async
+        mDisplay->paintMainScreen(mState);
+    }
 }
