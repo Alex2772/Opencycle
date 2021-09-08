@@ -9,11 +9,14 @@
 
 class LCD2004: public IDisplayDriver {
 private:
-    const static uint8_t PIN_RS       = (1 << 0);
-    const static uint8_t PIN_EN       = (1 << 2);
-    const static uint8_t BACKLIGHT    = (1 << 3);
-    const static uint8_t DELAY_MS     =  5;
-    const static uint8_t SETCGRAMADDR =  0x40;
+    const static uint8_t PIN_RS          = (1 << 0);
+    const static uint8_t PIN_EN          = (1 << 2);
+    const static uint8_t BACKLIGHT       = (1 << 3);
+    const static uint8_t DELAY_MS        =  5;
+    const static uint8_t SETCGRAMADDR    =  0x40;
+    const static uint8_t BLACK_BLOCK     =   0xff;
+    const static uint8_t EMPTY_BLOCK     =   ' ';
+    const static uint8_t GRAY_BLOCK      =   '#';
 
     enum CustomChars {
         CUSTOM_CHAR_1 = 8,
@@ -55,11 +58,25 @@ private:
         }
     }
 
+    void print(uint8_t x, uint8_t y, const char* string) {
+        setPosition(x, y);
+        sendString(string);
+    }
+
+    void print(uint8_t x, uint8_t y, char c) {
+        setPosition(x, y);
+        sendData(static_cast<uint8_t>(c));
+    }
+
 public:
     LCD2004(I2C_HandleTypeDef& i2cHandle, uint8_t i2cAddress);
     void paintMainScreen(const State& state) override;
 
     ~LCD2004() override = default;
+
+    void prePaintMainScreen(const State& state) override;
+
+    void clearRect(uint8_t x, uint8_t y, uint8_t width, uint8_t height);
 };
 
 

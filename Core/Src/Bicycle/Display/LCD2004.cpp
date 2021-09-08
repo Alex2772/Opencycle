@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <cmath>
 #include "LCD2004.h"
 
 /*
@@ -111,19 +112,69 @@ HAL_StatusTypeDef LCD2004::sendInternal(uint8_t data, uint8_t flags) {
     return res;
 }
 
-void LCD2004::paintMainScreen(const State& state) {
-    //printBigDigit(17, 0, 0);
+void LCD2004::prePaintMainScreen(const State& state) {
+    // numeric speed display block
+    {
+        // point for speed display
+        print(18, 2, '.');
 
-    printBigDigit(0, 0, 0);
-    printBigDigit(2, 0, 1);
-    printBigDigit(4, 0, 2);
-    printBigDigit(6, 0, 3);
-    printBigDigit(8, 0, 4);
-    printBigDigit(10, 0, 5);
-    printBigDigit(12, 0, 6);
-    printBigDigit(14, 0, 7);
-    printBigDigit(16, 0, 8);
-    printBigDigit(18, 0, 9);
+        // unit display
+        print(18, 0, "km");
+        print(19, 1, 'h');
+    }
+
+    // visual speed display block
+    {
+        print(0, 3, '[');
+        print(19, 3, ']');
+        //print(3, 2, "10| 20| 30|");
+        print(1, 2, "5| 15| 25|");
+    }
+}
+
+void LCD2004::paintMainScreen(const State& state) {
+    // numeric speed display block
+    {
+        // display speed
+        int digitAfterPoint = int(std::fmod(state.speed * 10.f, 10.f));
+        int digit0 = int(std::fmod(state.speed, 10.f));
+        int digit00 = int(std::fmod(state.speed / 10.f, 10.f));
+
+        // lowest digit
+        printBigDigit(16, 0, digit0);
+
+        // higher digit, we don't need to display zero
+        if (digit00 != 0) {
+            printBigDigit(14, 0, digit00);
+        } else {
+            clearRect(14, 0, 2, 3);
+        }
+
+        // digit after point
+        {
+            char buf[4];
+            std::sprintf(buf, "%d", digitAfterPoint);
+            print(19, 2, buf);
+        }
+    }
+
+    // visual speed display block
+    // 0|   10|   20|   30|   40|
+    //[#############             ]
+    {
+        setPosition(1, 3);
+        int threshold = int((state.speed - 1) / 5.f * 2.f * 2.f);
+        for (unsigned i = 0; i < 18; ++i) {
+            int delta = i * 2 - threshold;
+            if (delta < 0) {
+                sendData(BLACK_BLOCK);
+            } else if (delta == 0) {
+                sendData(GRAY_BLOCK);
+            } else {
+                sendData(EMPTY_BLOCK);
+            }
+        }
+    }
 }
 
 void LCD2004::createCustomChar(uint8_t slot, const std::array<uint8_t, 8>& data) {
@@ -144,7 +195,7 @@ void LCD2004::printBigDigit(uint8_t x, uint8_t y, uint8_t digitValue) {
     const uint8_t SR = 0b10100011;
     const uint8_t VL = 0b1111100;
     const uint8_t HL = 0b1011111;
-    const uint8_t NO = ' ';
+    const uint8_t NO = EMPTY_BLOCK;
 
     uint8_t digits[10][6] = {
         // 0
@@ -229,5 +280,14 @@ void LCD2004::printBigDigit(uint8_t x, uint8_t y, uint8_t digitValue) {
     setPosition(x, y + 2);
     sendData(digits[digitValue][4]);
     sendData(digits[digitValue][5]);
+}
+
+void LCD2004::clearRect(uint8_t x, uint8_t y, uint8_t width, uint8_t height) {
+    for (uint8_t iY = 0; iY < height; ++iY) {
+        setPosition(x, y + iY);
+        for (uint8_t iX = 0; iX < width; ++iX) {
+            sendData(EMPTY_BLOCK);
+        }
+    }
 }
 
