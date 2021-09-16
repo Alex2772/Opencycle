@@ -12,7 +12,7 @@ private:
     const static uint8_t PIN_RS          = (1 << 0);
     const static uint8_t PIN_EN          = (1 << 2);
     const static uint8_t BACKLIGHT       = (1 << 3);
-    const static uint8_t DELAY_MS        =  5;
+    const static uint8_t DELAY_MS        =  4;
     const static uint8_t SETCGRAMADDR    =  0x40;
     const static uint8_t BLACK_BLOCK     =   0xff;
     const static uint8_t EMPTY_BLOCK     =   ' ';

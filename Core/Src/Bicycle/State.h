@@ -4,7 +4,12 @@ struct State {
     /**
      * Speed in km/h.
      */
-    float speed = 0;
+    float currentSpeed = 0;
+
+    /**
+     * Speed of previous revolution in km/h.
+     */
+    float prevRevolutionSpeed = 0.f;
 
     /**
      * Overall distance on this session.

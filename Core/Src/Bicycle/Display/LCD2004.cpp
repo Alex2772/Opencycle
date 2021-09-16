@@ -136,9 +136,9 @@ void LCD2004::paintMainScreen(const State& state) {
     // numeric speed display block
     {
         // display speed
-        int digitAfterPoint = int(std::fmod(state.speed * 10.f, 10.f));
-        int digit0 = int(std::fmod(state.speed, 10.f));
-        int digit00 = int(std::fmod(state.speed / 10.f, 10.f));
+        int digitAfterPoint = int(std::fmod(state.currentSpeed * 10.f, 10.f));
+        int digit0 = int(std::fmod(state.currentSpeed, 10.f));
+        int digit00 = int(std::fmod(state.currentSpeed / 10.f, 10.f));
 
         // lowest digit
         printBigDigit(16, 0, digit0);
@@ -161,18 +161,26 @@ void LCD2004::paintMainScreen(const State& state) {
     // visual speed display block
     // 0|   10|   20|   30|   40|
     //[#############             ]
-    if (state.speed > 0.01f) {
-        setPosition(1, 3);
-        int threshold = int((state.speed - 1) / 5.f * 2.f * 2.f);
-        for (unsigned i = 0; i < 18; ++i) {
+
+    setPosition(1, 3);
+    int threshold = int((state.currentSpeed - 1) / 5.f * 2.f * 2.f);
+
+    {
+        // bullshit here because of slow i2c controller and we decided to make a feature from bug by creating a transition.
+        bool speedIncreased = state.prevRevolutionSpeed < state.currentSpeed;
+        for (unsigned i = speedIncreased ? 0 : 17; i < 18; speedIncreased ? ++i : --i) {
+            if (!speedIncreased) {
+                setPosition(i + 1, 3);
+            }
             int delta = i * 2 - threshold;
             if (delta < 0) {
                 sendData(BLACK_BLOCK);
-            } else if (delta == 0) {
+            } else if (delta == 0 && state.currentSpeed > 0.01f) {
                 sendData(GRAY_BLOCK);
             } else {
                 sendData(EMPTY_BLOCK);
             }
+            HAL_Delay(5);
         }
     }
 }
