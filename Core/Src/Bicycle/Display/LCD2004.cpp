@@ -161,14 +161,14 @@ void LCD2004::paintMainScreen(const State& state) {
     // visual speed display block
     // 0|   10|   20|   30|   40|
     //[#############             ]
-    {
+    if (state.speed > 0.01f) {
         setPosition(1, 3);
         int threshold = int((state.speed - 1) / 5.f * 2.f * 2.f);
         for (unsigned i = 0; i < 18; ++i) {
             int delta = i * 2 - threshold;
             if (delta < 0) {
                 sendData(BLACK_BLOCK);
-            } else if (delta == 1) {
+            } else if (delta == 0) {
                 sendData(GRAY_BLOCK);
             } else {
                 sendData(EMPTY_BLOCK);

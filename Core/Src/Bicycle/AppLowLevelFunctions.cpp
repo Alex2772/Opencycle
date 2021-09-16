@@ -17,7 +17,7 @@ extern "C" void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
         App::inst().onWheelRevolution();
     }
 }
-extern "C" void HAL_TIM_TriggerCallback(TIM_HandleTypeDef *htim)
+extern "C" void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-    __NOP();
+    App::inst().onMillisecondTimerElapsed();
 }
