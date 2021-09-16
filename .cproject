@@ -79,7 +79,7 @@
                   <listOptionValue builtIn="false" value="../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy" />
                   <listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32F4xx/Include" />
                   <listOptionValue builtIn="false" value="../Drivers/CMSIS/Include" />
-                </option>
+                <listOptionValue builtIn="false" value="../USB_DEVICE/App" /><listOptionValue builtIn="false" value="../USB_DEVICE/Target" /><listOptionValue builtIn="false" value="../Middlewares/ST/STM32_USB_Device_Library/Core/Inc" /><listOptionValue builtIn="false" value="../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc" /></option>
                 								
                 <option id="gnu.c.compiler.option.preprocessor.def.symbols.1373847938" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
                   <listOptionValue builtIn="false" value="USE_HAL_DRIVER" />
@@ -106,7 +106,7 @@
                   <listOptionValue builtIn="false" value="../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy" />
                   <listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32F4xx/Include" />
                   <listOptionValue builtIn="false" value="../Drivers/CMSIS/Include" />
-                </option>
+                <listOptionValue builtIn="false" value="../USB_DEVICE/App" /><listOptionValue builtIn="false" value="../USB_DEVICE/Target" /><listOptionValue builtIn="false" value="../Middlewares/ST/STM32_USB_Device_Library/Core/Inc" /><listOptionValue builtIn="false" value="../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc" /></option>
                 								
                 <option id="gnu.cpp.compiler.option.preprocessor.def.587046095" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" useByScannerDiscovery="false" valueType="definedSymbols">
                   <listOptionValue builtIn="false" value="USE_HAL_DRIVER" />
@@ -184,7 +184,7 @@
             					
           </folderInfo>
           					
-          <sourceEntries>
+          <sourceEntries><entry excluding="" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares" /><entry excluding="" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE" />
             <entry excluding="" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="startup" />
             <entry excluding="" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers" />
             <entry excluding="" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core" />
@@ -276,7 +276,7 @@
                   <listOptionValue builtIn="false" value="../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy" />
                   <listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32F4xx/Include" />
                   <listOptionValue builtIn="false" value="../Drivers/CMSIS/Include" />
-                </option>
+                <listOptionValue builtIn="false" value="../USB_DEVICE/App" /><listOptionValue builtIn="false" value="../USB_DEVICE/Target" /><listOptionValue builtIn="false" value="../Middlewares/ST/STM32_USB_Device_Library/Core/Inc" /><listOptionValue builtIn="false" value="../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc" /></option>
                 								
                 <option id="gnu.c.compiler.option.preprocessor.def.symbols.1373847938" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
                   <listOptionValue builtIn="false" value="USE_HAL_DRIVER" />
@@ -303,7 +303,7 @@
                   <listOptionValue builtIn="false" value="../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy" />
                   <listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32F4xx/Include" />
                   <listOptionValue builtIn="false" value="../Drivers/CMSIS/Include" />
-                </option>
+                <listOptionValue builtIn="false" value="../USB_DEVICE/App" /><listOptionValue builtIn="false" value="../USB_DEVICE/Target" /><listOptionValue builtIn="false" value="../Middlewares/ST/STM32_USB_Device_Library/Core/Inc" /><listOptionValue builtIn="false" value="../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc" /></option>
                 								
                 <option id="gnu.cpp.compiler.option.preprocessor.def.symbols.2118304548" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
                   <listOptionValue builtIn="false" value="USE_HAL_DRIVER" />
@@ -381,7 +381,7 @@
             					
           </folderInfo>
           					
-          <sourceEntries>
+          <sourceEntries><entry excluding="" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares" /><entry excluding="" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE" />
             <entry excluding="" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="startup" />
             <entry excluding="" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers" />
             <entry excluding="" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core" />

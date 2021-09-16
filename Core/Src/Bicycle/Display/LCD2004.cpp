@@ -168,7 +168,7 @@ void LCD2004::paintMainScreen(const State& state) {
             int delta = i * 2 - threshold;
             if (delta < 0) {
                 sendData(BLACK_BLOCK);
-            } else if (delta == 0) {
+            } else if (delta == 1) {
                 sendData(GRAY_BLOCK);
             } else {
                 sendData(EMPTY_BLOCK);

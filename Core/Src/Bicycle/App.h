@@ -18,4 +18,8 @@ public:
     }
 
     void run();
+
+    inline void onWheelRevolution() {
+        
+    }
 };
