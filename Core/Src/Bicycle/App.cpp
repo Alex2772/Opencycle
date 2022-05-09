@@ -1,8 +1,8 @@
 #include "App.h"
-#include "Display/LCD2004.h"
 #include "Config.h"
 #include "DeviceManager.h"
 #include "Calendar.h"
+#include "Driver/LCD2004/LCD2004.h"
 
 
 extern I2C_HandleTypeDef hi2c1;

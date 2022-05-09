@@ -2,11 +2,11 @@
 
 #include <cmath>
 #include <cstdint>
-#include <Bicycle/Display/IDisplayDriver.h>
 #include <stm32f4xx_hal.h>
 #include <array>
 #include "State.h"
 #include "Input.h"
+#include "IDisplayDriver.h"
 
 class App {
 private:

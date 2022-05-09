@@ -2,8 +2,7 @@
 
 #include <memory>
 #include <vector>
-#include <Bicycle/Device/IDevice.h>
-#include "Display/IDisplayDriver.h"
+#include "IDevice.h"
 
 class DeviceManager {
 private:

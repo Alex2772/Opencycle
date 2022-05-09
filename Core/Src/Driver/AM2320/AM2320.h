@@ -4,7 +4,7 @@
 #include <stm32f4xx_hal.h>
 #include <optional>
 #include <cstdint>
-#include "IDevice.h"
+#include <Bicycle/IDevice.h>
 
 /**
  * Driver for temperature + humidity sensor

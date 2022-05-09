@@ -4,8 +4,7 @@
 #include <stm32f4xx_hal_i2c.h>
 #include <cassert>
 #include <array>
-
-#include "IDisplayDriver.h"
+#include <Bicycle/IDisplayDriver.h>
 
 class LCD2004: public IDisplayDriver {
 private:

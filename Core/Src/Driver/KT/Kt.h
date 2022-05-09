@@ -1,0 +1,22 @@
+#pragma once
+
+
+#include "Bicycle/IDevice.h"
+#include "KtConfig.hpp"
+
+class Kt: public IDevice {
+public:
+    bool init() override;
+
+    void updateState(State& state) override;
+
+    ~Kt() override = default;
+
+private:
+    kt::KtToLcdPayload mCurrentKtToLcdPayload;
+    kt::LcdToKtPayload mCurrentLcdToKtPayload;
+    bool mNeedDispatchPayload = false;
+    float mCurrentSpeed = 0.f;
+};
+
+
