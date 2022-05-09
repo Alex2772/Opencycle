@@ -15,4 +15,7 @@ struct State {
      * Overall distance on this session.
      */
     float distance = 0;
+
+    float temperature = 0;
+    float humidity = 0;
 };

@@ -2,16 +2,23 @@
 
 #include <cmath>
 #include <cstdint>
-#include "Display/IDisplayDriver.h"
+#include <Bicycle/Display/IDisplayDriver.h>
+#include <stm32f4xx_hal.h>
+#include <array>
+#include "State.h"
+#include "Input.h"
 
 class App {
 private:
     IDisplayDriver* mDisplay;
+    I2C_HandleTypeDef mI2C;
     State mState;
 
-    App() = default;
+    App();
 
     uint16_t getMsCounterValueAndReset();
+
+    std::array<KeyState, 4> mKeyStates;
 
 public:
 
@@ -21,6 +28,10 @@ public:
     }
 
     void run();
+
+    bool isKeyDown(Key key) {
+        return mKeyStates[static_cast<int>(key)] == KeyState::PRESSED;
+    }
 
     inline void onSensorReportedWheelRevolution() {
         // check for bounce
@@ -41,4 +52,13 @@ public:
     inline void onWheelStopped() {
         mState.currentSpeed = 0;
     }
+
+    [[nodiscard]]
+    I2C_HandleTypeDef* getI2C() {
+        return &mI2C;
+    }
+
+    void onInput(Key key, KeyState state);
+
+    void reboot();
 };

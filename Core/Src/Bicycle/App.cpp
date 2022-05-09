@@ -1,8 +1,17 @@
 #include "App.h"
 #include "Display/LCD2004.h"
 #include "Config.h"
+#include "DeviceManager.h"
+#include "Calendar.h"
+
 
 extern I2C_HandleTypeDef hi2c1;
+
+App::App():
+    mI2C(hi2c1)
+{
+    DeviceManager::inst();
+}
 
 void App::run() {
     // TODO embed to some config
@@ -10,12 +19,23 @@ void App::run() {
 
     mDisplay->prePaintMainScreen(mState);
 
+    DeviceManager::init();
+
     // main loop
     for (;;) {
-        // TODO async
+        DeviceManager::updateState(mState);
         mDisplay->paintMainScreen(mState);
 
         // wait for interrupt
         __WFI();
     }
+}
+
+void App::reboot() {
+    HAL_NVIC_SystemReset();
+}
+
+
+void App::onInput(Key key, KeyState state) {
+    mKeyStates[static_cast<int>(key)] = state;
 }

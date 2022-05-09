@@ -1,7 +1,10 @@
 #include <cstdio>
 #include <cmath>
+#include <Bicycle/App.h>
 #include "LCD2004.h"
+#include "Bicycle/Calendar.h"
 
+extern "C" TIM_HandleTypeDef htim1;
 /*
  * This code is based on following projects:
  *
@@ -92,10 +95,10 @@ LCD2004::LCD2004(I2C_HandleTypeDef& i2cHandle, uint8_t i2cAddress):
 
 HAL_StatusTypeDef LCD2004::sendInternal(uint8_t data, uint8_t flags) {
     HAL_StatusTypeDef res;
-    for(;;) {
-        res = HAL_I2C_IsDeviceReady(&mI2CHandle, mI2CAddress, 1, HAL_MAX_DELAY);
-        if(res == HAL_OK)
-            break;
+
+    res = HAL_I2C_IsDeviceReady(&mI2CHandle, mI2CAddress, 1, MAX_DELAY);
+    if(res != HAL_OK) {
+        App::inst().reboot();
     }
 
     uint8_t up = data & 0xF0;
@@ -128,7 +131,7 @@ void LCD2004::prePaintMainScreen(const State& state) {
         print(0, 3, '[');
         print(19, 3, ']');
         //print(3, 2, "10| 20| 30|");
-        print(1, 2, "5| 15| 25|");
+        //print(1, 2, "5| 15| 25|");
     }
 }
 
@@ -159,7 +162,6 @@ void LCD2004::paintMainScreen(const State& state) {
     }
 
     // visual speed display block
-    // 0|   10|   20|   30|   40|
     //[#############             ]
 
     setPosition(1, 3);
@@ -182,6 +184,41 @@ void LCD2004::paintMainScreen(const State& state) {
             }
             HAL_Delay(5);
         }
+    }
+
+    // paint temperature
+    {
+        char buf[64];
+        sprintf(buf, "%.1f oC", state.temperature);
+        print(0, 0, buf);
+        sprintf(buf, "%.1f %%", state.humidity);
+        print(0, 1, buf);
+    }
+
+    // paint clock
+    {
+        char buf[64];
+        auto currentTime = Calendar::get();
+        sprintf(buf, "% 2lu:%02lu", currentTime.hours, currentTime.minutes);
+        print(9, 0, buf);
+    }
+
+    // test
+    {
+        if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) == GPIO_PIN_SET) {
+            print(0, 2, "ti pidor ");
+        } else if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) == GPIO_PIN_SET) {
+            print(0, 2, "ti gandon");
+        } else if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_10) == GPIO_PIN_SET) {
+            print(0, 2, "ti xyecoc");
+        } else if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_2) == GPIO_PIN_SET) {
+            print(0, 2, "ti loh   ");
+        } else {
+            clearRect(0, 2, 9, 1);
+        }
+        bool light = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_10) == GPIO_PIN_SET;
+        __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, light ? 450 : 0);
+        __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, light ? 450 : 0);
     }
 }
 
