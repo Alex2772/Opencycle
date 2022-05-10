@@ -15,6 +15,13 @@ extern "C" void app_run() {
 
 extern "C" void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
+    static std::uint32_t lastEvent = 0;
+
+    if (lastEvent > HAL_GetTick()) {
+        return;
+    }
+    lastEvent = HAL_GetTick() + 200;
+
     auto state = HAL_GPIO_ReadPin(GPIOB, GPIO_Pin) ? KeyState::PRESSED : KeyState::RELEASED;
     switch (GPIO_Pin) {
         case GPIO_PIN_3:

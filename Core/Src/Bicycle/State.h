@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 struct State {
     /**
      * Speed in km/h.
@@ -18,4 +20,8 @@ struct State {
 
     float temperature = 0;
     float humidity = 0;
+
+    std::uint16_t motorPower = 0;
+
+    float tmp = 0;
 };

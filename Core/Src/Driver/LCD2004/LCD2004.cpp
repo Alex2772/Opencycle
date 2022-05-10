@@ -196,8 +196,13 @@ void LCD2004::paintMainScreen(const State& state) {
     }
     {
         char buf[64];
-        sprintf(buf, "%.1f", state.currentSpeed);
+        sprintf(buf, "%03dW ", state.motorPower);
         print(0, 2, buf);
+    }
+    {
+        char buf[64];
+        sprintf(buf, "%.1f", state.tmp);
+        print(10, 2, buf);
     }
 
     // paint clock
@@ -206,24 +211,6 @@ void LCD2004::paintMainScreen(const State& state) {
         auto currentTime = Calendar::get();
         sprintf(buf, "% 2lu:%02lu", currentTime.hours, currentTime.minutes);
         print(9, 0, buf);
-    }
-
-    // test
-    if (false) {
-        if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) == GPIO_PIN_SET) {
-            print(0, 2, "ti pidor ");
-        } else if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) == GPIO_PIN_SET) {
-            print(0, 2, "ti gandon");
-        } else if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_10) == GPIO_PIN_SET) {
-            print(0, 2, "ti xyecoc");
-        } else if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_2) == GPIO_PIN_SET) {
-            print(0, 2, "ti loh   ");
-        } else {
-            clearRect(0, 2, 9, 1);
-        }
-        bool light = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_10) == GPIO_PIN_SET;
-        __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, light ? 450 : 0);
-        __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, light ? 450 : 0);
     }
 }
 

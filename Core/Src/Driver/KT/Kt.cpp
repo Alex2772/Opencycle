@@ -31,6 +31,8 @@ void Kt::updateState(State& state) {
     if (mNeedDispatchPayload) {
         mNeedDispatchPayload = false;
         if (auto dispatched = kt::dispatch(mCurrentKtToLcdPayload)) {
+            mMotorPower = dispatched->motorPower;
+            mTmp = dispatched->motorPower;
             auto currentSpeed = wheelDiameterInch() * 0.0254 * M_PI * 3.6 * 1000.0 / dispatched->period;
             if (currentSpeed < 2.0) {
                 mCurrentSpeed = 0;
@@ -44,5 +46,7 @@ void Kt::updateState(State& state) {
         mNeedDispatchPayload = true;
     });
 
+    state.motorPower = mMotorPower;
     state.currentSpeed = mCurrentSpeed;
+    state.tmp = mTmp;
 }
