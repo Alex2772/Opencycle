@@ -6,6 +6,7 @@
 
 
 extern I2C_HandleTypeDef hi2c1;
+extern TIM_HandleTypeDef htim1;
 
 App::App():
     mI2C(hi2c1)
@@ -38,4 +39,14 @@ void App::reboot() {
 
 void App::onInput(Key key, KeyState state) {
     mKeyStates[static_cast<int>(key)] = state;
+
+    if (state == KeyState::PRESSED) {
+        switch (key) {
+            case Key::UP:
+                mLight = !mLight;
+                __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, mLight ? 1000 : 0);
+                __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, mLight ? 1000 : 0);
+                break;
+        }
+    }
 }

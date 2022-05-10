@@ -15,13 +15,14 @@ extern "C" void app_run() {
 
 extern "C" void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
+    auto state = HAL_GPIO_ReadPin(GPIOB, GPIO_Pin) ? KeyState::PRESSED : KeyState::RELEASED;
     switch (GPIO_Pin) {
         case GPIO_PIN_3:
             App::inst().onSensorReportedWheelRevolution();
             break;
 
         case GPIO_PIN_10:
-            App::inst().onInput(Key::UP, KeyState::PRESSED);
+            App::inst().onInput(Key::UP, state);
             break;
 
     }

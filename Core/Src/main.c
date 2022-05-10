@@ -67,8 +67,8 @@ static void MX_I2C1_Init(void);
 static void MX_TIM1_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_ADC1_Init(void);
-static void MX_USART1_UART_Init(void);
 static void MX_DMA_Init(void);
+static void MX_USART1_UART_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_RTC_Init(void);
 /* USER CODE BEGIN PFP */
@@ -112,8 +112,8 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_ADC1_Init();
-    MX_DMA_Init();
-    MX_USART1_UART_Init();
+  MX_DMA_Init();
+  MX_USART1_UART_Init();
   MX_TIM3_Init();
   MX_RTC_Init();
   /* USER CODE BEGIN 2 */
@@ -516,7 +516,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 25000-1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 2500-1;
+  htim2.Init.Period = 250-1;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)

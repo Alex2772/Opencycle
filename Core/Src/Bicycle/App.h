@@ -13,6 +13,7 @@ private:
     IDisplayDriver* mDisplay;
     I2C_HandleTypeDef mI2C;
     State mState;
+    bool mLight = false;
 
     App();
 
