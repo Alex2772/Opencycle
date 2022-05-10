@@ -71,15 +71,15 @@ namespace kt {
         /**
          * (C1) PAS sensor mode.
          */
-        std::uint8_t c1PasSensorMode = 2;
+        std::uint8_t c1PasSensorMode = 0;
 
         /**
          * (C2) Motor phase classification.
          */
-        std::uint8_t c2MotorPhaseClassification = 2;
+        std::uint8_t c2MotorPhaseClassification = 0;
 
         std::uint8_t c3PasRatio = 0;
-        std::uint8_t c4ThrottleFunction = 3;
+        std::uint8_t c4ThrottleFunction = 0;
         std::uint8_t c5ControllerMaximumCurrent = 10;
         std::uint8_t c12ControllerMinimumVoltage = 4;
         std::uint8_t c13BrakingStrength = 0;
@@ -163,14 +163,14 @@ namespace kt {
 
     struct KtToLcdPacket {
         std::int8_t motorTemperatureCelsius;
-        std::uint8_t speed;
+        std::uint16_t period;
     };
     inline std::optional<KtToLcdPacket> dispatch(const KtToLcdPayload& payload) noexcept {
         if (payload[0] != 0x41) {
             return std::nullopt;
         }
         KtToLcdPacket out;
-        out.speed = payload[3];
+        out.period = std::uint16_t(payload[3]) * 256 + payload[4];
         out.motorTemperatureCelsius = static_cast<std::int8_t>(payload[8]) + 15;
         return out;
     }

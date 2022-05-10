@@ -18,6 +18,7 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+#include <assert.h>
 #include "main.h"
 #include "usb_device.h"
 
@@ -111,8 +112,8 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_ADC1_Init();
-  MX_USART1_UART_Init();
-  MX_DMA_Init();
+    MX_DMA_Init();
+    MX_USART1_UART_Init();
   MX_TIM3_Init();
   MX_RTC_Init();
   /* USER CODE BEGIN 2 */
@@ -137,8 +138,13 @@ int main(void)
       HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
       HAL_Delay(500);
 
-      uint8_t t[] = {0x0d, 0, 0x96, 0x4f, 0x2a, 0x3e, 0x00, 0xea, 0x00, 0x14, 0x01, 0x32, 0x0e};
+//    uint8_t t[] = {0x0d, 0, 0x96, 0x4f, 0x2a, 0x3e, 0x00, 0xea, 0x00, 0x14, 0x01, 0x32, 0x0e};
+      uint8_t t[] = {0x0c, 0x05, 0xf6, 0x50, 0x29, 0x47, 0x00, 0xea, 0x00, 0x14, 0x01, 0x32, 0x0e};
       HAL_UART_Transmit(&huart1, t, sizeof(t), 0xfffff);
+
+      char buf[12];
+      auto r = HAL_UART_Receive(&huart1, buf, sizeof(buf), 0xffffff);
+      assert(r == HAL_OK);
   }
   /* USER CODE END 3 */
 }

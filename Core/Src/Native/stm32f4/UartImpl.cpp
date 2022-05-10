@@ -4,6 +4,7 @@
 
 #include "Bicycle/Uart.h"
 #include <stm32f4xx_hal.h>
+#include <cassert>
 
 extern "C" UART_HandleTypeDef huart1;
 
@@ -28,7 +29,8 @@ extern "C" void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 void uart::asyncReceive(std::uint8_t* dst, std::size_t bufferSize, std::function<void()> onComplete) {
     if (!gOnComplete) {
         gOnComplete = std::move(onComplete);
-        HAL_UART_Receive_DMA(&huart1, dst, bufferSize);
+        auto r = HAL_UART_Receive_DMA(&huart1, dst, bufferSize);
+        assert(r == HAL_OK);
     }
 }
 

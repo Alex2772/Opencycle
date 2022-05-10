@@ -17,6 +17,9 @@ private:
     kt::LcdToKtPayload mCurrentLcdToKtPayload;
     bool mNeedDispatchPayload = false;
     float mCurrentSpeed = 0.f;
+    kt::Config mConfig;
+
+    float wheelDiameterInch() const;
 };
 
 

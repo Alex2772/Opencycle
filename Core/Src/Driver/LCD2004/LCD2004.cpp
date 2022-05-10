@@ -194,6 +194,11 @@ void LCD2004::paintMainScreen(const State& state) {
         sprintf(buf, "%.1f %%", state.humidity);
         print(0, 1, buf);
     }
+    {
+        char buf[64];
+        sprintf(buf, "%.1f", state.currentSpeed);
+        print(0, 2, buf);
+    }
 
     // paint clock
     {
@@ -204,7 +209,7 @@ void LCD2004::paintMainScreen(const State& state) {
     }
 
     // test
-    {
+    if (false) {
         if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) == GPIO_PIN_SET) {
             print(0, 2, "ti pidor ");
         } else if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) == GPIO_PIN_SET) {
