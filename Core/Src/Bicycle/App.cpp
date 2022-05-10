@@ -24,9 +24,11 @@ void App::run() {
 
     // main loop
     for (;;) {
-        DeviceManager::updateState(mState);
-        mDisplay->paintMainScreen(mState);
-
+        if (mNeedRepaint) {
+            mNeedRepaint = false;
+            DeviceManager::updateState(mState);
+            mDisplay->paintMainScreen(mState);
+        }
         // wait for interrupt
         __WFI();
     }

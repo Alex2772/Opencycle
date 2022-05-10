@@ -14,10 +14,9 @@ private:
     I2C_HandleTypeDef mI2C;
     State mState;
     bool mLight = false;
+    bool mNeedRepaint = true;
 
     App();
-
-    uint16_t getMsCounterValueAndReset();
 
     std::array<KeyState, 4> mKeyStates;
 
@@ -34,26 +33,6 @@ public:
         return mKeyStates[static_cast<int>(key)] == KeyState::PRESSED;
     }
 
-    inline void onSensorReportedWheelRevolution() {
-        // check for bounce
-
-        // calculate speed
-        auto timeDeltaMs = getMsCounterValueAndReset();
-        if (timeDeltaMs < 2) return;
-        const float WHEEL_LENGTH = 27.f // wheel diameter (inch)
-                                   * 2.54f // convert inch to cm
-                                   / 100.f  // convert cm to m
-                                   * M_PI  // calculate circle length by diameter
-        ;
-        float speedMSec = WHEEL_LENGTH / (timeDeltaMs / 1000.f);
-        mState.prevRevolutionSpeed = mState.currentSpeed;
-        mState.currentSpeed = speedMSec * 3.6f;
-    }
-
-    inline void onWheelStopped() {
-        mState.currentSpeed = 0;
-    }
-
     [[nodiscard]]
     I2C_HandleTypeDef* getI2C() {
         return &mI2C;
@@ -62,4 +41,8 @@ public:
     void onInput(Key key, KeyState state);
 
     void reboot();
+
+    void scheduleRepaint() {
+        mNeedRepaint = true;
+    }
 };

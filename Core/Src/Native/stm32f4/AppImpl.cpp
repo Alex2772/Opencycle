@@ -24,27 +24,22 @@ extern "C" void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
     auto state = HAL_GPIO_ReadPin(GPIOB, GPIO_Pin) ? KeyState::PRESSED : KeyState::RELEASED;
     switch (GPIO_Pin) {
-        case GPIO_PIN_3:
-            App::inst().onSensorReportedWheelRevolution();
-            break;
-
         case GPIO_PIN_10:
             App::inst().onInput(Key::UP, state);
             break;
 
     }
 }
-extern "C" void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+
+
+/**
+  * @brief  Hall Trigger detection callback in non-blocking mode
+  * @param  htim TIM handle
+  * @retval None
+  */
+__weak void HAL_TIM_TriggerCallback(TIM_HandleTypeDef *htim)
 {
-    App::inst().onWheelStopped();
+    if (&htim2 == htim) {
+        App::inst().scheduleRepaint();
+    }
 }
-
-uint16_t App::getMsCounterValueAndReset() {
-    HAL_TIM_Base_Stop(&htim2);
-    uint16_t v = htim2.Instance->CNT;
-    htim2.Instance->CNT = 0;
-    HAL_TIM_Base_Start_IT(&htim2);
-
-    return v;
-}
-
