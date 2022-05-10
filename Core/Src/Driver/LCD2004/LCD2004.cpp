@@ -196,13 +196,8 @@ void LCD2004::paintMainScreen(const State& state) {
     }
     {
         char buf[64];
-        sprintf(buf, "%03dW ", state.motorPower);
+        sprintf(buf, "%03dW %d oC ", state.motorPower, state.motorTemperature);
         print(0, 2, buf);
-    }
-    {
-        char buf[64];
-        sprintf(buf, "%.1f", state.tmp);
-        print(10, 2, buf);
     }
 
     // paint clock

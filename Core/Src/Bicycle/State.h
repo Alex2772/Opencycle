@@ -22,6 +22,5 @@ struct State {
     float humidity = 0;
 
     std::uint16_t motorPower = 0;
-
-    float tmp = 0;
+    std::uint8_t motorTemperature = 0;
 };

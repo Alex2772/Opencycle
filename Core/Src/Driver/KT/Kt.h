@@ -18,6 +18,7 @@ private:
     bool mNeedDispatchPayload = false;
     float mCurrentSpeed = 0.f;
     std::uint16_t mMotorPower = 0;
+    std::uint8_t mMotorTemperature = 0;
     float mTmp = 0.f;
     kt::Config mConfig;
 
