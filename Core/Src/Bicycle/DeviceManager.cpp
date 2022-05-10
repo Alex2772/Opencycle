@@ -10,6 +10,6 @@
 DeviceManager::DeviceManager() = default;
 
 void DeviceManager::init() {
-    importDevice<AM2320>(); // temp and humidity sensor
+    //importDevice<AM2320>(); // temp and humidity sensor
     importDevice<Kt>();     // kuteng e-bike controller
 }

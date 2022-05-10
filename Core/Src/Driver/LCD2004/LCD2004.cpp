@@ -196,7 +196,8 @@ void LCD2004::paintMainScreen(const State& state) {
     }
     {
         char buf[64];
-        sprintf(buf, "%03dW %d oC ", state.motorPower, state.motorTemperature);
+        static int test = 0;
+        sprintf(buf, "%03dW %d ", state.motorPower, test++);
         print(0, 2, buf);
     }
 

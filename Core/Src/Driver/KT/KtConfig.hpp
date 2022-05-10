@@ -172,8 +172,8 @@ namespace kt {
         }
         KtToLcdPacket out;
         out.period = std::uint16_t(payload[3]) * 256 + payload[4];
-        out.motorPower = static_cast<std::int8_t>(payload[8]) * 18;
-        out.motorTemperatureCelsius = static_cast<std::int8_t>(payload[9]) + 15;
+        out.motorPower = static_cast<std::int8_t>(payload[8]) * 13                                                              ;
+        out.motorTemperatureCelsius = static_cast<std::uint8_t>(payload[9]) + 15;
         return out;
     }
 }

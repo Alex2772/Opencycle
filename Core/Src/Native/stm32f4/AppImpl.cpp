@@ -37,7 +37,7 @@ extern "C" void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   * @param  htim TIM handle
   * @retval None
   */
-__weak void HAL_TIM_TriggerCallback(TIM_HandleTypeDef *htim)
+extern "C" void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     if (&htim2 == htim) {
         App::inst().scheduleRepaint();
