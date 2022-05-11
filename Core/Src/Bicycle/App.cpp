@@ -31,7 +31,7 @@ void App::run() {
             const double TIMER_PERIOD_SEC = 0.5;
 
             mState.distance += mState.currentSpeed / 3.6 * TIMER_PERIOD_SEC;
-            mState.consumedPowerKWh += mState.motorPower / 1000.0 * TIMER_PERIOD_SEC / 60.0 / 60.0;
+            mState.consumedPowerWhh += mState.motorPower * TIMER_PERIOD_SEC / 60.0 / 60.0;
 
             mDisplay->paintMainScreen(mState);
         }

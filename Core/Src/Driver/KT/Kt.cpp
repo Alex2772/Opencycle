@@ -30,7 +30,7 @@ bool Kt::init() {
         auto end = std::end(mReceiveBuffer);
 
         for (; end - begin >= sizeof(kt::KtToLcdPayload); ++begin) {
-            begin = std::find(begin, end, 0x65);
+            begin = std::find(begin, end, 0x41);
 
             if (auto dispatched = kt::dispatch(*reinterpret_cast<kt::KtToLcdPayload*>(begin))) {
                 mMotorPower = dispatched->motorPower;

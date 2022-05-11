@@ -174,12 +174,6 @@ namespace kt {
         if (payload[2] != 0) {
             return std::nullopt;
         }
-        if (payload[10] != 0) {
-            return std::nullopt;
-        }
-        if (payload[11] != 0) {
-            return std::nullopt;
-        }
 
         KtToLcdDispatched out;
         out.period = std::uint16_t(payload[3]) * 256 + payload[4];

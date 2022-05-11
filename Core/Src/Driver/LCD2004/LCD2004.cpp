@@ -212,7 +212,7 @@ void LCD2004::paintMainScreen(const State& state) {
     // e-bike indicators
     {
         char buf[64];
-        sprintf(buf, "%03dW %fkWh/h", state.motorPower, state.consumedPowerKWh);
+        sprintf(buf, "%03dW %.2fWh/h", state.motorPower, state.consumedPowerWhh);
         print(0, 2, buf);
     }
 

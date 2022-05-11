@@ -21,7 +21,7 @@ struct State {
     /**
      * Consumed electric power on this session. (kWh/h)
      */
-    double consumedPowerKWh = 0;
+    double consumedPowerWhh = 0;
 
     double temperature = 0;
     double humidity = 0;
