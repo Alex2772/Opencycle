@@ -37,5 +37,6 @@ void uart::asyncReceive(std::uint8_t* dst, std::size_t bufferSize, std::function
 }
 
 void uart::asyncTransmit(const std::uint8_t* src, std::size_t bufferSize) {
-    HAL_UART_Transmit_DMA(&huart1, const_cast<std::uint8_t*>(src), bufferSize);
+    auto r = HAL_UART_Transmit(&huart1, const_cast<std::uint8_t*>(src), bufferSize, 0xfffff);
+    assert(r == HAL_OK);
 }

@@ -6,6 +6,8 @@
 #include "Bicycle/Uart.h"
 #include "Bicycle/App.h"
 #include <cmath>
+#include <cstring>
+#include <cassert>
 
 double Kt::wheelDiameterInch() const {
     switch (mConfig.wheelSize) {
@@ -52,6 +54,10 @@ bool Kt::init() {
 }
 
 void Kt::updateState(State& state) {
+    {
+        auto test = kt::configToPlayload(mConfig);
+        assert(std::memcmp(&mCurrentLcdToKtPayload, &test, 0) == 0);
+    }
     transmit();
     if (App::tick() - mLastPacketReceivedTime >= 1000) {
         mMotorTemperature = 0;

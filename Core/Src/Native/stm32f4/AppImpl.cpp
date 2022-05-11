@@ -27,6 +27,15 @@ extern "C" void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
         case GPIO_PIN_10:
             App::inst().onInput(Key::UP, state);
             break;
+        case GPIO_PIN_2:
+            App::inst().onInput(Key::DOWN, state);
+            break;
+        case GPIO_PIN_12:
+            App::inst().onInput(Key::LEFT, state);
+            break;
+        case GPIO_PIN_13:
+            App::inst().onInput(Key::RIGHT, state);
+            break;
 
     }
 }

@@ -59,6 +59,10 @@ void App::onInput(Key key, KeyState state) {
                 __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, mLight ? 1000 : 0);
                 __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, mLight ? 1000 : 0);
                 break;
+
+            case Key::DOWN:
+                reboot();
+                break;
         }
     }
 }
