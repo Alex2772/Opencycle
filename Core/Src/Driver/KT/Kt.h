@@ -13,9 +13,8 @@ public:
     ~Kt() override = default;
 
 private:
-    kt::KtToLcdPayload mCurrentKtToLcdPayload;
+    char mReceiveBuffer[sizeof(kt::KtToLcdPayload) * 2];
     kt::LcdToKtPayload mCurrentLcdToKtPayload;
-    bool mNeedDispatchPayload = false;
     double mCurrentSpeed = 0.f;
     std::uint16_t mMotorPower = 0;
     std::uint8_t mMotorTemperature = 0;
@@ -23,6 +22,10 @@ private:
     kt::Config mConfig;
 
     double wheelDiameterInch() const;
+
+    void receive();
+
+    void transmit() const;
 };
 
 

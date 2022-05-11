@@ -161,19 +161,31 @@ namespace kt {
         return asPayload;
     }
 
-    struct KtToLcdPacket {
+    struct KtToLcdDispatched {
         std::int8_t motorTemperatureCelsius;
         std::uint16_t motorPower;
         std::uint16_t period;
+        bool throttle;
     };
-    inline std::optional<KtToLcdPacket> dispatch(const KtToLcdPayload& payload) noexcept {
+    inline std::optional<KtToLcdDispatched> dispatch(const KtToLcdPayload& payload) noexcept {
         if (payload[0] != 0x41) {
             return std::nullopt;
         }
-        KtToLcdPacket out;
+        if (payload[2] != 0) {
+            return std::nullopt;
+        }
+        if (payload[10] != 0) {
+            return std::nullopt;
+        }
+        if (payload[11] != 0) {
+            return std::nullopt;
+        }
+
+        KtToLcdDispatched out;
         out.period = std::uint16_t(payload[3]) * 256 + payload[4];
-        out.motorPower = static_cast<std::int8_t>(payload[8]) * 13                                                              ;
+        out.motorPower = static_cast<std::int8_t>(payload[8]) * 13;
         out.motorTemperatureCelsius = static_cast<std::uint8_t>(payload[9]) + 15;
+        out.throttle = payload[7] & 1;
         return out;
     }
 }
