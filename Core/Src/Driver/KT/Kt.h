@@ -21,6 +21,8 @@ private:
     double mTmp = 0.f;
     kt::Config mConfig;
 
+    std::uint32_t mLastPacketReceivedTime = 0;
+
     double wheelDiameterInch() const;
 
     void transmit() const;

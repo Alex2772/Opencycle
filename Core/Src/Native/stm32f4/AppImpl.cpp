@@ -31,6 +31,9 @@ extern "C" void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     }
 }
 
+std::uint32_t App::tick() {
+    return HAL_GetTick();
+}
 
 /**
   * @brief  Hall Trigger detection callback in non-blocking mode

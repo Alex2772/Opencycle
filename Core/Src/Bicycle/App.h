@@ -42,6 +42,12 @@ public:
         return &mI2C;
     }
 
+    /**
+     * high_resolution_clock in ms.
+     * @return
+     */
+    static std::uint32_t tick();
+
     void onInput(Key key, KeyState state);
 
     void reboot();

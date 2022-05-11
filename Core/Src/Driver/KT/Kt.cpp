@@ -4,6 +4,7 @@
 
 #include "Kt.h"
 #include "Bicycle/Uart.h"
+#include "Bicycle/App.h"
 #include <cmath>
 
 double Kt::wheelDiameterInch() const {
@@ -45,13 +46,19 @@ bool Kt::init() {
         }
         uart::asyncReceiveRepeat(mReceiveBuffer);
         transmit();
+        mLastPacketReceivedTime = App::tick();
     });
 
     return true;
 }
 
 void Kt::updateState(State& state) {
-    transmit();
+    if (App::tick() - mLastPacketReceivedTime >= 2000) {
+        transmit();
+        mMotorTemperature = 0;
+        mMotorPower = 0;
+        mCurrentSpeed = 0;
+    }
 
     state.motorPower = mMotorPower;
     state.motorTemperature = mMotorTemperature;
