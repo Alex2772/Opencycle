@@ -27,7 +27,7 @@ extern "C" void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 void uart::asyncReceiveRepeat(std::uint8_t* dst, std::size_t bufferSize) {
     auto r = HAL_UART_Receive_DMA(&huart1, dst, bufferSize);
-    assert(r == HAL_OK);
+    //assert(r == HAL_OK);
 }
 
 void uart::asyncReceive(std::uint8_t* dst, std::size_t bufferSize, std::function<void()> onComplete) {
@@ -37,6 +37,6 @@ void uart::asyncReceive(std::uint8_t* dst, std::size_t bufferSize, std::function
 }
 
 void uart::asyncTransmit(const std::uint8_t* src, std::size_t bufferSize) {
-    auto r = HAL_UART_Transmit(&huart1, const_cast<std::uint8_t*>(src), bufferSize, 0xfffff);
-    assert(r == HAL_OK);
+    auto r = HAL_UART_Transmit_DMA(&huart1, const_cast<std::uint8_t*>(src), bufferSize);
+    //assert(r == HAL_OK);
 }

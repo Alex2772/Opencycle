@@ -30,18 +30,19 @@ bool Kt::init() {
     uart::asyncReceive(mReceiveBuffer, [this] {
 
         auto begin = std::begin(mReceiveBuffer);
-        auto end = std::end(mReceiveBuffer);
+        auto end = begin + sizeof(mReceiveBuffer) - sizeof(kt::KtToLcdPayload);
 
-        for (; ; ++begin) {
+        for (; begin != end; ++begin) {
             begin = std::find(begin, end, 0x41);
 
-            if (end - begin < sizeof(kt::KtToLcdPayload)) {
+            if (begin >= end) {
                 break;
             }
 
             if (auto dispatched = kt::dispatch(*reinterpret_cast<kt::KtToLcdPayload*>(begin))) {
                 mMotorPower = dispatched->motorPower;
                 mMotorTemperature = dispatched->motorTemperatureCelsius;
+                mIsThrottling = dispatched->throttle;
                 auto currentSpeed = wheelDiameterInch() * 0.0254 * M_PI * 3.6 * 1000.0 / dispatched->period;
                 if (currentSpeed < 2.0) {
                     mCurrentSpeed = 0;
@@ -57,11 +58,9 @@ bool Kt::init() {
 }
 
 void Kt::updateState(State& state) {
-    {
-        auto test = kt::configToPlayload(mConfig);
-        assert(std::memcmp(&mCurrentLcdToKtPayload, &test, 0) == 0);
-    }
+    uart::asyncReceiveRepeat(mReceiveBuffer);
     transmit();
+
     if (App::tick() - mLastPacketReceivedTime >= 1000) {
         mMotorTemperature = 0;
         mMotorPower = 0;
@@ -71,6 +70,7 @@ void Kt::updateState(State& state) {
     state.motorPower = mMotorPower;
     state.motorTemperature = mMotorTemperature;
     state.currentSpeed = mCurrentSpeed;
+    state.isThrottling = mIsThrottling;
 }
 
 void Kt::transmit() const { uart::asyncTransmit(mCurrentLcdToKtPayload); }

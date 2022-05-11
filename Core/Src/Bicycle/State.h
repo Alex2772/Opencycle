@@ -28,4 +28,5 @@ struct State {
 
     std::uint16_t motorPower = 0;
     std::uint8_t motorTemperature = 0;
+    bool isThrottling = false;
 };

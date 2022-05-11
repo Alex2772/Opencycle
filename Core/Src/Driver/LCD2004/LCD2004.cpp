@@ -173,7 +173,7 @@ void LCD2004::paintMainScreen(const State& state) {
 
     {
         // bullshit here because of slow i2c controller and we decided to make a feature from bug by creating a transition.
-        if (std::fabs(state.prevRevolutionSpeed - state.currentSpeed) > 0.2) {
+        if (std::fabs(state.prevRevolutionSpeed - state.currentSpeed) > 0.1) {
             bool speedIncreased = state.prevRevolutionSpeed < state.currentSpeed;
 
             for (unsigned i = speedIncreased ? 0 : 17; i < 18; speedIncreased ? ++i : --i) {
@@ -212,7 +212,7 @@ void LCD2004::paintMainScreen(const State& state) {
     // e-bike indicators
     {
         char buf[64];
-        sprintf(buf, "%03dW %.2fWh/h", state.motorPower, state.consumedPowerWhh);
+        sprintf(buf, "%03dW %.1fWh/h", state.motorPower, state.consumedPowerWhh);
         print(0, 2, buf);
     }
 
@@ -224,8 +224,12 @@ void LCD2004::paintMainScreen(const State& state) {
         print(9, 0, buf);
     }
 
-    // light
-    print(7, 0, App::inst().isLight() ? 'L' : ' ');
+    // light and throttling
+    {
+        char buf[8];
+        sprintf(buf, "%c%c", state.isThrottling ? 'T' : ' ', App::inst().isLight() ? 'L' : ' ');
+        print(6, 0, buf);
+    }
 }
 
 void LCD2004::createCustomChar(uint8_t slot, const std::array<uint8_t, 8>& data) {
