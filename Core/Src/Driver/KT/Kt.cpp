@@ -45,7 +45,6 @@ bool Kt::init() {
             }
         }
         uart::asyncReceiveRepeat(mReceiveBuffer);
-        transmit();
         mLastPacketReceivedTime = App::tick();
     });
 
@@ -53,8 +52,8 @@ bool Kt::init() {
 }
 
 void Kt::updateState(State& state) {
-    if (App::tick() - mLastPacketReceivedTime >= 2000) {
-        transmit();
+    transmit();
+    if (App::tick() - mLastPacketReceivedTime >= 1000) {
         mMotorTemperature = 0;
         mMotorPower = 0;
         mCurrentSpeed = 0;

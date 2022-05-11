@@ -14,7 +14,8 @@ private:
     I2C_HandleTypeDef mI2C;
     State mState;
     bool mLight = false;
-    bool mNeedRepaint = true;
+    bool mNeedStateUpdate = true;
+    std::uint8_t mStateUpdateCounterForRepaint = 0;
 
     App();
 
@@ -52,7 +53,7 @@ public:
 
     void reboot();
 
-    void scheduleRepaint() {
-        mNeedRepaint = true;
+    void scheduleStateUpdate() {
+        mNeedStateUpdate = true;
     }
 };

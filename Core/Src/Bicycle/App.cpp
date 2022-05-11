@@ -24,16 +24,20 @@ void App::run() {
 
     // main loop
     for (;;) {
-        if (mNeedRepaint) {
-            mNeedRepaint = false;
+        if (mNeedStateUpdate) {
+            mNeedStateUpdate = false;
             DeviceManager::updateState(mState);
 
-            const double TIMER_PERIOD_SEC = 0.5;
+
+            const double TIMER_PERIOD_SEC = 0.1;
 
             mState.distance += mState.currentSpeed / 3.6 * TIMER_PERIOD_SEC;
             mState.consumedPowerWhh += mState.motorPower * TIMER_PERIOD_SEC / 60.0 / 60.0;
 
-            mDisplay->paintMainScreen(mState);
+            mStateUpdateCounterForRepaint = (mStateUpdateCounterForRepaint + 1) % 5;
+            if (mStateUpdateCounterForRepaint == 0) {
+                mDisplay->paintMainScreen(mState);
+            }
         }
         // wait for interrupt
         __WFI();
