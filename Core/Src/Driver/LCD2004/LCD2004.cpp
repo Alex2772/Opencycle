@@ -143,9 +143,9 @@ void LCD2004::paintMainScreen(const State& state) {
 
     {
         // display speed
-        int digitAfterPoint = int(std::fmod(state.currentSpeed * 10.f, 10.f));
-        int digit0 = int(std::fmod(state.currentSpeed, 10.f));
-        int digit00 = int(std::fmod(state.currentSpeed / 10.f, 10.f));
+        int digitAfterPoint = int(std::fmod(state.currentSpeed * 10.0, 10.0));
+        int digit0 = int(std::fmod(state.currentSpeed, 10.0));
+        int digit00 = int(std::fmod(state.currentSpeed / 10.0, 10.0));
 
         // lowest digit
         printBigDigit(16, 0, digit0);
@@ -169,7 +169,7 @@ void LCD2004::paintMainScreen(const State& state) {
     //[#############             ]
 
     setPosition(1, 3);
-    int threshold = int((state.currentSpeed - 1) / 5.f * 2.f * 2.f);
+    int threshold = int((state.currentSpeed - 1) / 5.0 * 2.0 * 2.0);
 
     {
         // bullshit here because of slow i2c controller and we decided to make a feature from bug by creating a transition.
@@ -202,10 +202,17 @@ void LCD2004::paintMainScreen(const State& state) {
         print(0, 1, buf);
     }
 
+    // distance
     {
         char buf[64];
-        static int test = 0;
-        sprintf(buf, "%03dW %d ", state.motorPower, test++);
+        sprintf(buf, "%lum", std::uint32_t(state.distance));
+        print(4, 1, buf);
+    }
+
+    // e-bike indicators
+    {
+        char buf[64];
+        sprintf(buf, "%03dW %fkWh/h", state.motorPower, state.consumedPowerKWh);
         print(0, 2, buf);
     }
 

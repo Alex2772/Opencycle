@@ -144,9 +144,6 @@ int main(void)
       uint8_t t[] = {0x0c, 0x05, 0xf6, 0x50, 0x29, 0x47, 0x00, 0xea, 0x00, 0x14, 0x01, 0x32, 0x0e};
       HAL_UART_Transmit(&huart1, t, sizeof(t), 0xfffff);
 
-      char buf[12];
-      auto r = HAL_UART_Receive(&huart1, buf, sizeof(buf), 0xffffff);
-      assert(r == HAL_OK);
   }
   /* USER CODE END 3 */
 }
@@ -516,7 +513,7 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 1000-1;
+  htim2.Init.Prescaler = 500-1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim2.Init.Period = 84000-1;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;

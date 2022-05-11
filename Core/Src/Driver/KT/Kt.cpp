@@ -6,7 +6,7 @@
 #include "Bicycle/Uart.h"
 #include <cmath>
 
-float Kt::wheelDiameterInch() const {
+double Kt::wheelDiameterInch() const {
     switch (mConfig.wheelSize) {
         case kt::Config::WheelSize::INCH_10: return 10;
         case kt::Config::WheelSize::INCH_12: return 12;
@@ -17,6 +17,7 @@ float Kt::wheelDiameterInch() const {
         case kt::Config::WheelSize::INCH_26: return 26;
         case kt::Config::WheelSize::INCH_27_5: return 27.5;
     }
+    return 0;
 }
 
 bool Kt::init() {

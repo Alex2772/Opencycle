@@ -6,20 +6,25 @@ struct State {
     /**
      * Speed in km/h.
      */
-    float currentSpeed = 0;
+    double currentSpeed = 0;
 
     /**
      * Speed of previous revolution in km/h.
      */
-    float prevRevolutionSpeed = 0.f;
+    double prevRevolutionSpeed = 0.f;
 
     /**
-     * Overall distance on this session.
+     * Overall distance on this session. (m)
      */
-    float distance = 0;
+    double distance = 0;
 
-    float temperature = 0;
-    float humidity = 0;
+    /**
+     * Consumed electric power on this session. (kWh/h)
+     */
+    double consumedPowerKWh = 0;
+
+    double temperature = 0;
+    double humidity = 0;
 
     std::uint16_t motorPower = 0;
     std::uint8_t motorTemperature = 0;

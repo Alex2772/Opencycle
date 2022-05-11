@@ -27,6 +27,12 @@ void App::run() {
         if (mNeedRepaint) {
             mNeedRepaint = false;
             DeviceManager::updateState(mState);
+
+            const double TIMER_PERIOD_SEC = 0.5;
+
+            mState.distance += mState.currentSpeed / 3.6 * TIMER_PERIOD_SEC;
+            mState.consumedPowerKWh += mState.motorPower / 1000.0 * TIMER_PERIOD_SEC / 60.0 / 60.0;
+
             mDisplay->paintMainScreen(mState);
         }
         // wait for interrupt
