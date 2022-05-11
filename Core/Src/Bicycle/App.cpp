@@ -38,12 +38,9 @@ void App::run() {
                 mDisplay->paintMainScreen(mState);
             }
 
-            auto speedDelta = mState.prevSpeed - mState.currentSpeed;
+            auto speedDelta = mState.currentSpeed - mState.prevSpeed;
             if (speedDelta < -0.2) {
-                mStopBlinkState = !mStopBlinkState;
-                setBackLightEnabled(mStopBlinkState);
-            } else {
-                setBackLightEnabled(mLightEnabled);
+                mStopLightBlinkingUntilTime = tick() + 1000;
             }
 
             mState.prevSpeed = mState.currentSpeed;
@@ -73,5 +70,16 @@ void App::onInput(Key key, KeyState state) {
                 reboot();
                 break;
         }
+    }
+}
+
+void App::onTimer100ms() {
+    mNeedStateUpdate = true;
+
+    if (mStopLightBlinkingUntilTime >= tick() && !mState.isThrottling) {
+        mStopBlinkState = !mStopBlinkState;
+        setBackLightEnabled(mStopBlinkState);
+    } else {
+        setBackLightEnabled(mLightEnabled);
     }
 }

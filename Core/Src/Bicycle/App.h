@@ -42,9 +42,7 @@ public:
 
     void reboot();
 
-    void scheduleStateUpdate() {
-        mNeedStateUpdate = true;
-    }
+    void onTimer100ms();
 
     void waitForInterrupt() const;
 
@@ -61,6 +59,7 @@ private:
     State mState;
     bool mLightEnabled = false;
     bool mStopBlinkState = false;
+    std::uint32_t mStopLightBlinkingUntilTime = 0;
     bool mNeedStateUpdate = true;
     std::uint8_t mStateUpdateCounterForRepaint = 0;
 

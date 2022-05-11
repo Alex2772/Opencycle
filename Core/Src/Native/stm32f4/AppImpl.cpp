@@ -53,7 +53,7 @@ std::uint32_t App::tick() {
 extern "C" void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     if (&htim2 == htim) {
-        App::inst().scheduleStateUpdate();
+        App::inst().onTimer100ms();
     }
 }
 
