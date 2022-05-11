@@ -55,6 +55,8 @@
 #include <time.h>
 #include <sys/time.h>
 #include <sys/times.h>
+#include "stm32f4xx_hal.h"
+#include "stm32f4xx_hal_cortex.h"
 
 
 /* Variables */

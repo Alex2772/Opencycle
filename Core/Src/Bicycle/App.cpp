@@ -6,7 +6,6 @@
 
 
 extern I2C_HandleTypeDef hi2c1;
-extern TIM_HandleTypeDef htim1;
 
 App::App():
     mI2C(hi2c1)
@@ -38,11 +37,21 @@ void App::run() {
             if (mStateUpdateCounterForRepaint == 0) {
                 mDisplay->paintMainScreen(mState);
             }
+
+            auto speedDelta = mState.prevSpeed - mState.currentSpeed;
+            if (speedDelta < -0.2) {
+                mStopBlinkState = !mStopBlinkState;
+                setBackLightEnabled(mStopBlinkState);
+            } else {
+                setBackLightEnabled(mLightEnabled);
+            }
+
+            mState.prevSpeed = mState.currentSpeed;
         }
-        // wait for interrupt
-        __WFI();
+        waitForInterrupt();
     }
 }
+
 
 void App::reboot() {
     HAL_NVIC_SystemReset();
@@ -55,9 +64,9 @@ void App::onInput(Key key, KeyState state) {
     if (state == KeyState::PRESSED) {
         switch (key) {
             case Key::UP:
-                mLight = !mLight;
-                __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, mLight ? 1000 : 0);
-                __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, mLight ? 1000 : 0);
+                mLightEnabled = !mLightEnabled;
+                setFrontLightEnabled(mLightEnabled);
+                setBackLightEnabled(mLightEnabled);
                 break;
 
             case Key::DOWN:

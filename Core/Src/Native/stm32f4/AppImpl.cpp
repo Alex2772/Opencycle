@@ -7,6 +7,7 @@
 #include "stm32f4xx_hal.h"
 
 extern "C" TIM_HandleTypeDef htim2;
+extern "C" TIM_HandleTypeDef htim1;
 
 extern "C" void app_run() {
     App::inst().run();
@@ -55,3 +56,9 @@ extern "C" void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         App::inst().scheduleStateUpdate();
     }
 }
+
+void App::setBackLightPwm(std::uint32_t pwm) const { __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, pwm); }
+
+void App::setFrontLightPwm(std::uint32_t pwm) const { __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, pwm); }
+
+void App::waitForInterrupt() const { __WFI(); }

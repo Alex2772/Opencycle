@@ -9,9 +9,9 @@ struct State {
     double currentSpeed = 0;
 
     /**
-     * Speed of previous revolution in km/h.
+     * Speed of previous state frame in km/h.
      */
-    double prevRevolutionSpeed = 0.f;
+    double prevSpeed = 0.f;
 
     /**
      * Overall distance on this session. (m)

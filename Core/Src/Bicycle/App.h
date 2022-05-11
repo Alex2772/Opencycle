@@ -7,20 +7,9 @@
 #include "State.h"
 #include "Input.h"
 #include "IDisplayDriver.h"
+#include "Config.h"
 
 class App {
-private:
-    IDisplayDriver* mDisplay;
-    I2C_HandleTypeDef mI2C;
-    State mState;
-    bool mLight = false;
-    bool mNeedStateUpdate = true;
-    std::uint8_t mStateUpdateCounterForRepaint = 0;
-
-    App();
-
-    std::array<KeyState, 4> mKeyStates;
-
 public:
 
     static App& inst() {
@@ -30,8 +19,8 @@ public:
 
     void run();
 
-    bool isLight() {
-        return mLight;
+    bool isLightEnabled() {
+        return mLightEnabled;
     }
 
     bool isKeyDown(Key key) {
@@ -56,4 +45,29 @@ public:
     void scheduleStateUpdate() {
         mNeedStateUpdate = true;
     }
+
+    void waitForInterrupt() const;
+
+    void setFrontLightEnabled(bool enabled) const {
+        setFrontLightPwm(enabled ? LIGHT_FULL_PWM : 0);
+    }
+    void setBackLightEnabled(bool enabled) const {
+        setBackLightPwm(enabled ? LIGHT_FULL_PWM : 0);
+    }
+
+private:
+    IDisplayDriver* mDisplay;
+    I2C_HandleTypeDef mI2C;
+    State mState;
+    bool mLightEnabled = false;
+    bool mStopBlinkState = false;
+    bool mNeedStateUpdate = true;
+    std::uint8_t mStateUpdateCounterForRepaint = 0;
+
+    App();
+
+    std::array<KeyState, 4> mKeyStates;
+
+    void setFrontLightPwm(std::uint32_t pwm) const;
+    void setBackLightPwm(std::uint32_t pwm) const;
 };

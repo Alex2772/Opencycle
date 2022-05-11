@@ -173,8 +173,8 @@ void LCD2004::paintMainScreen(const State& state) {
 
     {
         // bullshit here because of slow i2c controller and we decided to make a feature from bug by creating a transition.
-        if (std::fabs(state.prevRevolutionSpeed - state.currentSpeed) > 0.1) {
-            bool speedIncreased = state.prevRevolutionSpeed < state.currentSpeed;
+        if (std::fabs(state.prevSpeed - state.currentSpeed) > 0.1) {
+            bool speedIncreased = state.prevSpeed < state.currentSpeed;
 
             for (unsigned i = speedIncreased ? 0 : 17; i < 18; speedIncreased ? ++i : --i) {
                 if (!speedIncreased) {
@@ -227,7 +227,7 @@ void LCD2004::paintMainScreen(const State& state) {
     // light and throttling
     {
         char buf[8];
-        sprintf(buf, "%c%c", state.isThrottling ? 'T' : ' ', App::inst().isLight() ? 'L' : ' ');
+        sprintf(buf, "%c%c", state.isThrottling ? 'T' : ' ', App::inst().isLightEnabled() ? 'L' : ' ');
         print(6, 0, buf);
     }
 }
