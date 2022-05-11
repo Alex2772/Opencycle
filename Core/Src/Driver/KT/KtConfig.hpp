@@ -80,8 +80,8 @@ namespace kt {
 
         std::uint8_t c3PasRatio = 0;
         std::uint8_t c4ThrottleFunction = 0;
-        std::uint8_t c5ControllerMaximumCurrent = 10;
-        std::uint8_t c12ControllerMinimumVoltage = 4;
+        std::uint8_t c5ControllerMaximumCurrent = 02;
+        std::uint8_t c12ControllerMinimumVoltage = 0;
         std::uint8_t c13BrakingStrength = 0;
         std::uint8_t c14PowerAssistTuning = 3;
 
