@@ -23,8 +23,6 @@ private:
 
     double wheelDiameterInch() const;
 
-    void receive();
-
     void transmit() const;
 };
 

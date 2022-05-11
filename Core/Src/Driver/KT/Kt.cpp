@@ -23,23 +23,8 @@ double Kt::wheelDiameterInch() const {
 bool Kt::init() {
     mConfig.assistLevel = kt::Config::AssistLevel::L5;
     mCurrentLcdToKtPayload = kt::configToPlayload(mConfig);
-    return true;
-}
 
-void Kt::updateState(State& state) {
-    transmit();
-    receive();
-
-    state.motorPower = mMotorPower;
-    state.motorTemperature = mMotorTemperature;
-    state.currentSpeed = mCurrentSpeed;
-}
-
-void Kt::transmit() const { uart::asyncTransmit(mCurrentLcdToKtPayload); }
-
-void Kt::receive() {
     uart::asyncReceive(mReceiveBuffer, [this] {
-        transmit();
 
         auto begin = std::begin(mReceiveBuffer);
         auto end = std::end(mReceiveBuffer);
@@ -58,7 +43,19 @@ void Kt::receive() {
                 }
             }
         }
-
-        receive();
+        uart::asyncReceiveRepeat(mReceiveBuffer);
+        transmit();
     });
+
+    return true;
 }
+
+void Kt::updateState(State& state) {
+    transmit();
+
+    state.motorPower = mMotorPower;
+    state.motorTemperature = mMotorTemperature;
+    state.currentSpeed = mCurrentSpeed;
+}
+
+void Kt::transmit() const { uart::asyncTransmit(mCurrentLcdToKtPayload); }

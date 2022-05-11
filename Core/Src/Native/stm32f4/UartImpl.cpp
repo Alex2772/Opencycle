@@ -21,17 +21,19 @@ extern "C" void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     if (gOnComplete) {
         gOnComplete();
-        gOnComplete = nullptr;
     }
 }
 
 
+void uart::asyncReceiveRepeat(std::uint8_t* dst, std::size_t bufferSize) {
+    auto r = HAL_UART_Receive_DMA(&huart1, dst, bufferSize);
+    assert(r == HAL_OK);
+}
+
 void uart::asyncReceive(std::uint8_t* dst, std::size_t bufferSize, std::function<void()> onComplete) {
-    if (!gOnComplete) {
-        gOnComplete = std::move(onComplete);
-        auto r = HAL_UART_Receive_DMA(&huart1, dst, bufferSize);
-        assert(r == HAL_OK);
-    }
+    gOnComplete = std::move(onComplete);
+    auto r = HAL_UART_Receive_DMA(&huart1, dst, bufferSize);
+    assert(r == HAL_OK);
 }
 
 void uart::asyncTransmit(const std::uint8_t* src, std::size_t bufferSize) {
