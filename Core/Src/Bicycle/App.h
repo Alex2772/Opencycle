@@ -29,6 +29,10 @@ public:
 
     void run();
 
+    bool isLight() {
+        return mLight;
+    }
+
     bool isKeyDown(Key key) {
         return mKeyStates[static_cast<int>(key)] == KeyState::PRESSED;
     }

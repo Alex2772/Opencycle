@@ -126,6 +126,9 @@ void LCD2004::prePaintMainScreen(const State& state) {
         print(19, 1, 'h');
     }
 
+    print(2, 0, "oC");
+    print(2, 1, "%");
+
     // visual speed display block
     {
         print(0, 3, '[');
@@ -137,6 +140,7 @@ void LCD2004::prePaintMainScreen(const State& state) {
 
 void LCD2004::paintMainScreen(const State& state) {
     // numeric speed display block
+
     {
         // display speed
         int digitAfterPoint = int(std::fmod(state.currentSpeed * 10.f, 10.f));
@@ -169,31 +173,35 @@ void LCD2004::paintMainScreen(const State& state) {
 
     {
         // bullshit here because of slow i2c controller and we decided to make a feature from bug by creating a transition.
-        bool speedIncreased = state.prevRevolutionSpeed < state.currentSpeed;
-        for (unsigned i = speedIncreased ? 0 : 17; i < 18; speedIncreased ? ++i : --i) {
-            if (!speedIncreased) {
-                setPosition(i + 1, 3);
+        if (std::fabs(state.prevRevolutionSpeed - state.currentSpeed) > 0.2) {
+            bool speedIncreased = state.prevRevolutionSpeed < state.currentSpeed;
+
+            for (unsigned i = speedIncreased ? 0 : 17; i < 18; speedIncreased ? ++i : --i) {
+                if (!speedIncreased) {
+                    setPosition(i + 1, 3);
+                }
+                int delta = i * 2 - threshold;
+                if (delta < 0) {
+                    sendData(BLACK_BLOCK);
+                } else if (delta == 0 && state.currentSpeed > 0.01f) {
+                    sendData(GRAY_BLOCK);
+                } else {
+                    sendData(EMPTY_BLOCK);
+                }
+                HAL_Delay(5);
             }
-            int delta = i * 2 - threshold;
-            if (delta < 0) {
-                sendData(BLACK_BLOCK);
-            } else if (delta == 0 && state.currentSpeed > 0.01f) {
-                sendData(GRAY_BLOCK);
-            } else {
-                sendData(EMPTY_BLOCK);
-            }
-            HAL_Delay(5);
         }
     }
 
     // paint temperature
     {
         char buf[64];
-        sprintf(buf, "%.1f oC", state.temperature);
+        sprintf(buf, "%2.0f", state.temperature);
         print(0, 0, buf);
-        sprintf(buf, "%.1f %%", state.humidity);
+        sprintf(buf, "%2.0f", state.humidity);
         print(0, 1, buf);
     }
+
     {
         char buf[64];
         static int test = 0;
@@ -208,6 +216,9 @@ void LCD2004::paintMainScreen(const State& state) {
         sprintf(buf, "% 2lu:%02lu", currentTime.hours, currentTime.minutes);
         print(9, 0, buf);
     }
+
+    // light
+    print(7, 0, App::inst().isLight() ? 'L' : ' ');
 }
 
 void LCD2004::createCustomChar(uint8_t slot, const std::array<uint8_t, 8>& data) {
