@@ -32,8 +32,12 @@ bool Kt::init() {
         auto begin = std::begin(mReceiveBuffer);
         auto end = std::end(mReceiveBuffer);
 
-        for (; end - begin >= sizeof(kt::KtToLcdPayload); ++begin) {
+        for (; ; ++begin) {
             begin = std::find(begin, end, 0x41);
+
+            if (end - begin < sizeof(kt::KtToLcdPayload)) {
+                break;
+            }
 
             if (auto dispatched = kt::dispatch(*reinterpret_cast<kt::KtToLcdPayload*>(begin))) {
                 mMotorPower = dispatched->motorPower;
@@ -46,7 +50,6 @@ bool Kt::init() {
                 }
             }
         }
-        uart::asyncReceiveRepeat(mReceiveBuffer);
         mLastPacketReceivedTime = App::tick();
     });
 
