@@ -24,7 +24,6 @@ double Kt::wheelDiameterInch() const {
 }
 
 bool Kt::init() {
-    mConfig.assistLevel = kt::Config::AssistLevel::L5;
     mCurrentLcdToKtPayload = kt::configToPlayload(mConfig);
 
     uart::asyncReceive(mReceiveBuffer, [this] {

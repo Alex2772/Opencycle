@@ -66,7 +66,7 @@ namespace kt {
          * This parameter is determined by the battery characteristics, ordinary 24V lithium is generally is 4-11,
          * 36V lithium is between 5_15
          */
-        std::uint8_t p5BatteryChargeMonitoring = 14;
+        std::uint8_t p5BatteryChargeMonitoring = 5;
 
         /**
          * (C1) PAS sensor mode.
@@ -80,7 +80,7 @@ namespace kt {
 
         std::uint8_t c3PasRatio = 0;
         std::uint8_t c4ThrottleFunction = 0;
-        std::uint8_t c5ControllerMaximumCurrent = 02;
+        std::uint8_t c5ControllerMaximumCurrent = 10;
         std::uint8_t c12ControllerMinimumVoltage = 0;
         std::uint8_t c13BrakingStrength = 0;
         std::uint8_t c14PowerAssistTuning = 3;

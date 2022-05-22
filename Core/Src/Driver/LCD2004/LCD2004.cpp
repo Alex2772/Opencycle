@@ -25,6 +25,7 @@ LCD2004::LCD2004(I2C_HandleTypeDef& i2cHandle, uint8_t i2cAddress):
     // clear display (optional here)
     sendCommand(0b00000001);
 
+
     createCustomChar(0, {
         0b00000,
         0b00000,
@@ -105,10 +106,10 @@ HAL_StatusTypeDef LCD2004::sendInternal(uint8_t data, uint8_t flags) {
     uint8_t lo = (data << 4) & 0xF0;
 
     uint8_t data_arr[4];
-    data_arr[0] = up|flags|BACKLIGHT|PIN_EN;
-    data_arr[1] = up|flags|BACKLIGHT;
-    data_arr[2] = lo|flags|BACKLIGHT|PIN_EN;
-    data_arr[3] = lo|flags|BACKLIGHT;
+    data_arr[0] = up|BACKLIGHT|flags|PIN_EN;
+    data_arr[1] = up|BACKLIGHT|flags;
+    data_arr[2] = lo|BACKLIGHT|flags|PIN_EN;
+    data_arr[3] = lo|BACKLIGHT|flags;
 
     res = HAL_I2C_Master_Transmit(&mI2CHandle, mI2CAddress, data_arr, sizeof(data_arr), HAL_MAX_DELAY);
     HAL_Delay(DELAY_MS);
@@ -170,10 +171,10 @@ void LCD2004::paintMainScreen(const State& state) {
 
     setPosition(1, 3);
     int threshold = int((state.currentSpeed - 1) / 5.0 * 2.0 * 2.0);
-
+/*
     {
         // bullshit here because of slow i2c controller and we decided to make a feature from bug by creating a transition.
-        if (std::fabs(state.prevSpeed - state.currentSpeed) > 0.1) {
+        {
             bool speedIncreased = state.prevSpeed < state.currentSpeed;
 
             for (unsigned i = speedIncreased ? 0 : 17; i < 18; speedIncreased ? ++i : --i) {
@@ -192,7 +193,7 @@ void LCD2004::paintMainScreen(const State& state) {
             }
         }
     }
-
+*/
     // paint temperature
     {
         char buf[64];
@@ -212,7 +213,7 @@ void LCD2004::paintMainScreen(const State& state) {
     // e-bike indicators
     {
         char buf[64];
-        sprintf(buf, "%03dW %.1fWh/h", state.motorPower, state.consumedPowerWhh);
+        sprintf(buf, "%04dW %.1fWh/h", state.motorPower, state.consumedPowerWhh);
         print(0, 2, buf);
     }
 

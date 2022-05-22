@@ -33,7 +33,7 @@ void App::run() {
             mState.distance += mState.currentSpeed / 3.6 * TIMER_PERIOD_SEC;
             mState.consumedPowerWhh += mState.motorPower * TIMER_PERIOD_SEC / 60.0 / 60.0;
 
-            mStateUpdateCounterForRepaint = (mStateUpdateCounterForRepaint + 1) % 5;
+            mStateUpdateCounterForRepaint = (mStateUpdateCounterForRepaint + 1) % 2;
             if (mStateUpdateCounterForRepaint == 0) {
                 mDisplay->paintMainScreen(mState);
             }
