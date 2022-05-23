@@ -39,9 +39,9 @@ void Kt::performReceive() {
 
         constexpr auto PACKET_BEGIN_MARKER = 0x41;
 
-        auto packetBegin = std::find(begin, end, 0x41);
+        auto packetBegin = std::find(begin, end, PACKET_BEGIN_MARKER);
 
-        if (begin >= end) {
+        if (packetBegin >= end) {
             // not a kt packet; drop it
             return;
         } else if (packetBegin != begin) {
