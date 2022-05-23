@@ -26,34 +26,47 @@ double Kt::wheelDiameterInch() const {
 bool Kt::init() {
     mCurrentLcdToKtPayload = kt::configToPlayload(mConfig);
 
+    performReceive();
+
+    return true;
+}
+
+void Kt::performReceive() {
     uart::asyncReceive(mReceiveBuffer, [this] {
 
         auto begin = std::begin(mReceiveBuffer);
-        auto end = begin + sizeof(mReceiveBuffer) - sizeof(kt::KtToLcdPayload);
+        auto end = std::end(mReceiveBuffer);
 
-        for (; begin != end; ++begin) {
-            begin = std::find(begin, end, 0x41);
+        constexpr auto PACKET_BEGIN_MARKER = 0x41;
 
-            if (begin >= end) {
-                break;
-            }
+        auto packetBegin = std::find(begin, end, 0x41);
 
-            if (auto dispatched = kt::dispatch(*reinterpret_cast<kt::KtToLcdPayload*>(begin))) {
-                mMotorPower = dispatched->motorPower;
-                mMotorTemperature = dispatched->motorTemperatureCelsius;
-                mIsThrottling = dispatched->throttle;
-                auto currentSpeed = wheelDiameterInch() * 0.0254 * M_PI * 3.6 * 1000.0 / dispatched->period;
-                if (currentSpeed < 2.0) {
-                    mCurrentSpeed = 0;
-                } else {
-                    mCurrentSpeed = currentSpeed;
-                }
+        if (begin >= end) {
+            // not a kt packet; drop it
+            return;
+        } else if (packetBegin != begin) {
+            // a shift occurred; need to compensate it
+            std::size_t remainingPacketLength = packetBegin - begin;
+            uart::asyncReceive(reinterpret_cast<uint8_t*>(mReceiveBuffer), remainingPacketLength, [this] {
+                // compensated, try normal receipt again
+                performReceive();
+            });
+            return;
+        }
+
+        if (auto dispatched = kt::dispatch(*reinterpret_cast<kt::KtToLcdPayload*>(begin))) {
+            mMotorPower = dispatched->motorPower;
+            mMotorTemperature = dispatched->motorTemperatureCelsius;
+            mIsThrottling = dispatched->throttle;
+            auto currentSpeed = wheelDiameterInch() * 0.0254 * M_PI * 3.6 * 1000.0 / dispatched->period;
+            if (currentSpeed < 2.0) {
+                mCurrentSpeed = 0;
+            } else {
+                mCurrentSpeed = currentSpeed;
             }
         }
         mLastPacketReceivedTime = App::tick();
     });
-
-    return true;
 }
 
 void Kt::updateState(State& state) {

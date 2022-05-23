@@ -13,7 +13,7 @@ public:
     ~Kt() override = default;
 
 private:
-    char mReceiveBuffer[32] __attribute__ ((aligned(32)));
+    char mReceiveBuffer[sizeof(kt::KtToLcdPayload)] __attribute__ ((aligned(32)));
     kt::LcdToKtPayload mCurrentLcdToKtPayload  __attribute__ ((aligned(32)));
     double mCurrentSpeed = 0.f;
     std::uint16_t mMotorPower = 0;
@@ -27,6 +27,8 @@ private:
     double wheelDiameterInch() const;
 
     void transmit() const;
+
+    void performReceive();
 };
 
 
