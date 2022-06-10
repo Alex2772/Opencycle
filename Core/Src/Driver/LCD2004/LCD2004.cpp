@@ -347,3 +347,20 @@ void LCD2004::clearRect(uint8_t x, uint8_t y, uint8_t width, uint8_t height) {
     }
 }
 
+void LCD2004::paintListMenu(const ListMenu::State& state) {
+    int selectedItemIndex = state.selectedItem - state.items.begin();
+    auto firstDisplayedItemIndex = std::clamp(selectedItemIndex - 1, 0, int(state.items.size() - 1));
+    for (int i = 0; i < 4; ++i) {
+        auto index = firstDisplayedItemIndex + i;
+        if (index >= state.items.size()) break;
+        print(1, i, state.items[index].name.c_str());
+    }
+    print(0, selectedItemIndex - firstDisplayedItemIndex, '>');
+}
+
+void LCD2004::paintValueChangingMenu(std::string_view str) {
+    print(10, 1, '^');
+    print(10 - str.length() / 2, 2, str.data());
+    print(10, 3, 'v');
+}
+

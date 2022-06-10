@@ -3,6 +3,8 @@
 #include "DeviceManager.h"
 #include "Calendar.h"
 #include "Driver/LCD2004/LCD2004.h"
+#include "Settings.h"
+#include "Bicycle/Menu/SettingsMenu.h"
 
 
 extern I2C_HandleTypeDef hi2c1;
@@ -14,6 +16,13 @@ App::App():
 }
 
 void App::run() {
+
+    {
+        Settings s;
+        s.backLightIntensity = 1;
+        s.frontLightIntensity = 1;
+        s.save();
+    }
     // TODO embed to some config
     mDisplay = new LCD2004(hi2c1, LCD2004_I2C_ADDR);
 
@@ -58,6 +67,12 @@ void App::reboot() {
 void App::onInput(Key key, KeyState state) {
     mKeyStates[static_cast<int>(key)] = state;
 
+    if (!mMenuStack.empty()) {
+        if (state == KeyState::PRESSED) {
+            mMenuStack.top()->onKeyAction(key);
+        }
+    }
+
     if (state == KeyState::PRESSED) {
         switch (key) {
             case Key::UP:
@@ -68,6 +83,10 @@ void App::onInput(Key key, KeyState state) {
 
             case Key::DOWN:
                 reboot();
+                break;
+
+            case Key::LEFT:
+                showMenu(std::make_unique<SettingsMenu>());
                 break;
         }
     }

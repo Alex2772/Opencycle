@@ -72,11 +72,15 @@ public:
     LCD2004(I2C_HandleTypeDef& i2cHandle, uint8_t i2cAddress);
     void paintMainScreen(const State& state) override;
 
+    void paintListMenu(const ListMenu::State& state) override;
+
     ~LCD2004() override = default;
 
     void prePaintMainScreen(const State& state) override;
 
     void clearRect(uint8_t x, uint8_t y, uint8_t width, uint8_t height);
+
+    void paintValueChangingMenu(std::string_view str) override;
 };
 
 

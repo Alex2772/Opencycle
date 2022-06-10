@@ -126,14 +126,6 @@ int main(void)
   __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, 0);
   HAL_TIM_Base_Start_IT(&htim2);
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-  while (1) {
-    /* USER CODE END WHILE */
-    /* USER CODE BEGIN 3 */
-    for (int i = 0; i < 1000; ++i) {
-        htim3.Instance->CCR1 = 300 + i; // 500-1000
-        HAL_Delay(10);
-    }
-  }
 
   app_run();
   /* USER CODE END 2 */

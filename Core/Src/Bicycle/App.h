@@ -4,10 +4,13 @@
 #include <cstdint>
 #include <stm32f4xx_hal.h>
 #include <array>
+#include <stack>
+#include <memory>
 #include "State.h"
 #include "Input.h"
 #include "IDisplayDriver.h"
 #include "Config.h"
+#include "Menu/IMenu.h"
 
 class App {
 public:
@@ -53,6 +56,10 @@ public:
         setBackLightPwm(enabled ? LIGHT_FULL_PWM : 0);
     }
 
+    void showMenu(std::unique_ptr<IMenu> menu) {
+        mMenuStack.push(std::move(menu));
+    }
+
 private:
     IDisplayDriver* mDisplay;
     I2C_HandleTypeDef mI2C;
@@ -62,6 +69,7 @@ private:
     std::uint32_t mStopLightBlinkingUntilTime = 0;
     bool mNeedStateUpdate = true;
     std::uint8_t mStateUpdateCounterForRepaint = 0;
+    std::stack<std::unique_ptr<IMenu>> mMenuStack;
 
     App();
 
