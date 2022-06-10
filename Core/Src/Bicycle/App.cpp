@@ -15,14 +15,7 @@ App::App():
     DeviceManager::inst();
 }
 
-void App::run() {
-
-    {
-        Settings s;
-        s.backLightIntensity = 1;
-        s.frontLightIntensity = 1;
-        s.save();
-    }
+void App::run() {   
     // TODO embed to some config
     mDisplay = new LCD2004(hi2c1, LCD2004_I2C_ADDR);
 
@@ -44,7 +37,12 @@ void App::run() {
 
             mStateUpdateCounterForRepaint = (mStateUpdateCounterForRepaint + 1) % 2;
             if (mStateUpdateCounterForRepaint == 0) {
-                mDisplay->paintMainScreen(mState);
+		
+		if (mMenuStack.empty()) {
+                    mDisplay->paintMainScreen(mState);
+		} else {
+		    mMenuStack.top()->paint(*mDisplay);	
+		}
             }
 
             auto speedDelta = mState.currentSpeed - mState.prevSpeed;
