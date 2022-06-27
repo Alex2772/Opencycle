@@ -29,20 +29,13 @@ void App::run() {
             mNeedStateUpdate = false;
             DeviceManager::updateState(mState);
 
-
-            const double TIMER_PERIOD_SEC = 0.1;
-
-            mState.distance += mState.currentSpeed / 3.6 * TIMER_PERIOD_SEC;
-            mState.consumedPowerWhh += mState.motorPower * TIMER_PERIOD_SEC / 60.0 / 60.0;
-
             mStateUpdateCounterForRepaint = (mStateUpdateCounterForRepaint + 1) % 2;
             if (mStateUpdateCounterForRepaint == 0) {
-		
-		if (mMenuStack.empty()) {
-                    mDisplay->paintMainScreen(mState);
-		} else {
-		    mMenuStack.top()->paint(*mDisplay);	
-		}
+                if (mMenuStack.empty()) {
+                                  mDisplay->paintMainScreen(mState);
+                } else {
+                    mMenuStack.top()->paint(*mDisplay);
+                }
             }
 
             auto speedDelta = mState.currentSpeed - mState.prevSpeed;
@@ -92,6 +85,11 @@ void App::onInput(Key key, KeyState state) {
 
 void App::onTimer100ms() {
     mNeedStateUpdate = true;
+
+    const double TIMER_PERIOD_SEC = 0.1;
+
+    mState.distance += mState.currentSpeed / 3.6 * TIMER_PERIOD_SEC;
+    mState.consumedPowerWhh += mState.motorPower * TIMER_PERIOD_SEC / 60.0 / 60.0;
 
     if (mStopLightBlinkingUntilTime >= tick() && !mState.isThrottling) {
         mStopBlinkState = !mStopBlinkState;
