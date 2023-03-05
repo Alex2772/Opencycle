@@ -57,7 +57,7 @@ extern "C" void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     }
 }
 
-void App::setBackLightPwm(std::uint32_t pwm) const { __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_3, pwm); }
+void App::setBackLightPwm(std::uint32_t pwm) const { __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, pwm); }
 
 void App::setFrontLightPwm(std::uint32_t pwm) const { __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, pwm); }
 
